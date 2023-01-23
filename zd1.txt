@@ -1,0 +1,130 @@
+import java.util.LinkedList;
+import java.util.Random;
+
+public class Zad1 {
+    static LinkedList<String> buffer = new LinkedList<>();
+    static final int BUFFER_SIZE = 5;
+
+    public static void main(String[] args) {
+        class Producer extends Thread {
+            private String name;
+            public int ileWygenerowac;
+
+            public Producer(String name, int ileWygenerowac) {
+                this.name = name;
+                this.ileWygenerowac = ileWygenerowac;
+            }
+            @Override
+            public void run() {
+                while (ileWygenerowac > 0) {
+                    synchronized (buffer) {
+                        if (buffer.size() == BUFFER_SIZE) {
+                            try {
+                                buffer.wait();
+                                System.out.println("Producer " + name + " is waiting, full buffer");
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            Random r = new Random();
+                            String[] words = {"p", "a", "w", "e", "l", "s", "o", "k", "o", "l", "o", "w", "s", "k", "i"};
+
+                            String s = "10.01.2023_106530_";
+                            for (int i = 0; i < 10; i++) {
+                                s = s + words[r.nextInt(words.length)];
+                            }
+
+                            System.out.println("Producent wygenerował : " + s);
+                            buffer.addLast(s);
+                            ileWygenerowac--;
+                            buffer.notify();
+                        }
+                        try {
+                            Thread.sleep(10);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+
+        class Consumer extends Thread {
+            private String name;
+            public int ileWygenerowac;
+
+            public Consumer(String name, int ileWygenerowac) {
+                this.name = name;
+                this.ileWygenerowac = ileWygenerowac;
+            }
+
+            @Override
+            public void run() {
+                while (ileWygenerowac > 0) {
+                    synchronized (buffer) {
+                        if (buffer.size() == 0) {
+                            try {
+                                buffer.wait();
+                                System.out.println("Consumer " + name + " is waiting, empty buffer");
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            String elem = buffer.getFirst();
+                            int a = 0, f = 0, m = 0, s = 0, w = 0, l0 = 0, l1 = 0, l5 = 0, l9 = 0;
+
+                            for (var i : elem.toCharArray()) {
+                                switch (i) {
+                                    case 'a':
+                                        a++;
+                                        break;
+                                    case 's':
+                                        s++;
+                                        break;
+                                    case 'm':
+                                        m++;
+                                        break;
+                                    case 'f':
+                                        f++;
+                                        break;
+                                    case 'w':
+                                        w++;
+                                        break;
+                                    case '0':
+                                        l0++;
+                                        break;
+                                    case '1':
+                                        l1++;
+                                        break;
+                                    case '5':
+                                        l5++;
+                                        break;
+                                    case '9':
+                                        l9++;
+                                        break;
+                                    default:
+                                }
+                            }
+                            System.out.println("Konsument " + name + " skonumował : " + elem + " i wyznaczył: "
+                                    + " liter a : " + a + " liter s : " + s + " liter m : " + m + " liter f : " + f + " liter w: " + w +
+                                    " liczb 0 : " + l0 + " liczb 1 : " + l1 + " liczb 5 : " + l5 + " liter 9 : " + l9);
+                            try {
+                                Thread.sleep(10);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            buffer.removeFirst();
+                            ileWygenerowac--;
+                            buffer.notify();
+                        }
+                    }
+                }
+            }
+        }
+        new Producer("I", 10).start();
+        new Producer("II", 10).start();
+        new Producer("III", 10).start();
+        new Consumer("I", 15).start();
+        new Consumer("I", 15).start();
+    }
+}
