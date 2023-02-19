@@ -1,4 +1,4 @@
-1.	Uzupełnij funkcję tak, aby zwracała medianę wartości gradientu X (z filtra sobela) na obrazie img (skala szarości)
+1. Uzupełnij funkcję tak, aby zwracała medianę wartości gradientu X (z filtra sobela) na obrazie img (skala szarości)
 import numpy as np
 from skimage import io
 import cv2
@@ -21,9 +21,7 @@ gradient_y = cv2.Sobel(img,cv2.CV_64F,0,1,ksize=5)
 return np.median(gradient_y)
 
 
-
-
-2.	 # Uzupełnij funkcję, aby zwracała obraz będący rezultatem  konwolucji obrazu
+2. Uzupełnij funkcję, aby zwracała obraz będący rezultatem  konwolucji obrazu
 # img (będącym obrazem w skali szarości) z następującym filtrem:
 
 # | -1 -2 -1 |
@@ -48,7 +46,9 @@ conv = cv2.filter2D(img, cv2.CV_32F, f)
 return conv
 
 	Jeśli – inne wartości
-3.	Uzupełnij funkcję get_indices tak, aby zwracała listę wszystkich indeksów pikseli o wartości val z obrazu img. Indeksy powinny być w postaci krotki (y,x)
+	
+	
+3. Uzupełnij funkcję get_indices tak, aby zwracała listę wszystkich indeksów pikseli o wartości val z obrazu img. Indeksy powinny być w postaci krotki (y,x)
 import numpy as np
 from skimage import io
 import cv2
@@ -59,22 +59,14 @@ img_gray = cv2.cvtColor(img_color, cv2.COLOR_RGB2GRAY)
 # ROZWIĄZANIE:
 
 def get_indices(img, val):
- pass # <- uzupełnij funkcję
-
-# TEST:
-assert isinstance(get_indices(img_gray, 88), list)
-assert isinstance(get_indices(img_gray, 88)[0], tuple)
-
-	Odpowiedź:
-	
-x = np.array(np.where(img == val)).T
-x = [tuple([i[1], i[0]]) for i in x]
-return x
-
-jeśli nie wszystkie to większe > i mniejsze < od val
+ pass
+ 
+Odpowiedź:
+indices = np.where(img == val)
+return list(zip(indices[0], indices[1]))
 
 
-4.	Napisz funkcję, która przyjmuje obraz kolorowy img i zwraca wartość kanału niebieskiego na pozycji x, y (oś pozioma, oś pionowa), zakładając, że punkt (0,0) to lewy górny róg obrazu.
+4. Napisz funkcję, która przyjmuje obraz kolorowy img i zwraca wartość kanału niebieskiego na pozycji x, y (oś pozioma, oś pionowa), zakładając, że punkt (0,0) to lewy górny róg obrazu.
 from matplotlib import pyplot as plt
 from skimage import io
 import cv2
@@ -96,7 +88,8 @@ return img[y,x,2]
 
 jeśli czerwony 0 jeśli zielony to 1
 
-5.	Uzupełnij funkcję tak, by dokonywała reshapingu obrazu img (skala szarości) do postaci wektora o wymiarach N x 1 (ndarray).
+
+5. Uzupełnij funkcję tak, by dokonywała reshapingu obrazu img (skala szarości) do postaci wektora o wymiarach N x 1 (ndarray).
 import numpy as np
 from skimage import io
 import cv2
@@ -109,39 +102,9 @@ img_gray = cv2.cvtColor(img_color, cv2.COLOR_RGB2GRAY)
 def img_flatten(img):
   pass
 
-	Odpowiedź:
-	
-return np.ravel(img).reshape((img.shape[0]*img.shape[1],1))
-
-Jeśli to zmiana w reshape – kolejność i wartości
-
-
-
-6.	Uzupełnij funkcję get_greater_indices tak, aby zwracała listę wszystkich indeksów pikseli o wartości większej niż val z obrazu img. Indeksy powinny być w postaci krotki (y,x)
-
-import numpy as np
-from skimage import io
-import cv2
-
-img_color = io.imread('https://i.postimg.cc/mksNZfXc/BoQS.png')
-img_gray = cv2.cvtColor(img_color, cv2.COLOR_RGB2GRAY)
-
-# ROZWIĄZANIE:
-
-def get_greater_indices(img, val):
- pass # <- uzupełnij funkcję
-
-# TEST:
-assert isinstance(get_greater_indices(img_gray, 88), list)
-assert isinstance(get_greater_indices(img_gray, 88)[0], tuple)
-
 Odpowiedź:
- 
-indices = np.where(img > val)
-return list(zip(indices[0], indices[1]))
-
-jeśli to operator tak jak w 3
-
+return np.ravel(img).reshape((img.shape[0]*img.shape[1],1))
+Jeśli to zmiana w reshape – kolejność i wartości
 
 
 7.	Napisz funkcję która przyjmuje obraz kolorowy img i zwraca wartość kanału niebieskiego na pozycji x,y (oś pozioma, oś pionowa), zakładając, że punkt (0, 0) to lewy górny róg obrazu.
@@ -163,13 +126,11 @@ def get_blue(img, x, y):
 assert get_blue(img_color, 51, 400) == 100
 
 Odpowiedź:
- 
 return img[y, x, 2]
-
 tak samo jak 4
 
 
-8.	Napisz funkcję, która przyjmuje obraz kolorowy img i zwraca wartość kanału niebieskiego na pozycji środkowego piksela o współrzędnych (w/2, h/2) (jeśli któraś ze współrzędnych jest nieparzysta należy przyjąć w mianowniku w-1 lub h-1)
+8. Napisz funkcję, która przyjmuje obraz kolorowy img i zwraca wartość kanału niebieskiego na pozycji środkowego piksela o współrzędnych (w/2, h/2) (jeśli któraś ze współrzędnych jest nieparzysta należy przyjąć w mianowniku w-1 lub h-1)
 from matplotlib import pyplot as plt
 from skimage import io
 import cv2
@@ -190,26 +151,6 @@ print(get_blue_center(img_color))
 assert get_blue_center(img_color) == 255
 Odpowiedź:
 To samo co 11 XD
-
-9.	Uzupełnij funkcję get_indices tak, aby zwracała listę wszystkich indeksów
-pikseli o wartości val z obrazu img. Indeksy powinny być w postaci krotki(y,x)
-import numpy as np
-from skimage import io
-import cv2
-img_color = io.imread('https://i.postimg.cc/mksNZfXc/BoQS.png')
-img_gray = cv2.cvtColor(img_color, cv2.COLOR_RGB2GRAY)
-# ROZWIĄZANIE:
-def get_indices(img, val):
- pass # <- uzupełnij funkcję
-# TEST:
-assert isinstance(get_indices(img_gray, 88), list)
-assert isinstance(get_indices(img_gray, 88)[0], tuple)
-
-Odpowiedź:
-indices = np.where(img == val)
-return list(zip(indices[0], indices[1]))
-
-to samo co 3 i 6
 
 
 10.	Uzupełnij funkcję tak, aby zwracała średnią wartość gradientu Y (z filtra sobela) na obrazie img (skala szarości)
@@ -232,7 +173,7 @@ sobel_y = cv2.Sobel(img, cv2.CV_64F, 0, 1, ksize=5)
 jeśli - to samo co 1
 
 
-11.	Napisz funkcję, która przyjmuje obraz kolorowy img i zwraca wartość kanału
+11. Napisz funkcję, która przyjmuje obraz kolorowy img i zwraca wartość kanału
 niebieskiego na pozycji środkowego piksela o współrzędnych (w/2, h/2) (jeśli
 #któraś ze współrzędnych jest nieparzysta należy przyjąć w mianowniku w-1 lub h-1)
 
